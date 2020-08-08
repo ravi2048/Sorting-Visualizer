@@ -1,38 +1,19 @@
-// import React from 'react';
-// import './SortingVisualizer.css';
-
-
-// //--export-- keyword is used so that this class can be used(by importing) by 
-// //other programms also
-// //--extends-- used to create a class/object of parent class
-// // syntax ==> class childclass extends parentclass
-// //--React.Components-- similar to functions in JavaScript
-// // but work in isolation and returns HTML via a render function
-// export default class SortingVisualizer extends React.Component{
-//     // constuctor creats an instance Objet
-//     // props is property of the component
-//     constructor(props)
-//     {
-//         //--super(arguments)-- this can accept all the arguments  that has been
-//         // used to create a constuctor
-//         super(props);
-//     // state is accessible only within component(to keep track of data 
-//     // within component)
-//         this.state = {
-//         array : [],
-
 
 import React from 'react';
-import {getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getBubbleSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getQuickSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getMergeSortAnimations} from '../sortingAlgorithms/mergeSort.js';
+import {getBubbleSortAnimations} from '../sortingAlgorithms/bubbleSort.js';
+import {getQuickSortAnimations} from '../sortingAlgorithms/quickSort.js';
+import {getHeapSortAnimations} from '../sortingAlgorithms/heapSort.js';
+import {getInsertionSortAnimations} from '../sortingAlgorithms/insertionSort.js';
+
 import './SortingVisualizer.css';
 
 // Change this value for the speed of the animations.
 const ANIMATION_SPEED_MS = 1;
 
 // Change this value for the number of bars (value) in the array.
-const NUMBER_OF_ARRAY_BARS = 150;
+const NUMBER_OF_ARRAY_BARS = 100;
+
 
 // This is the main color of the array bars.
 const PRIMARY_COLOR = 'turquoise';
@@ -40,12 +21,18 @@ const PRIMARY_COLOR = 'turquoise';
 // This is the color of array bars that are being compared throughout the animations.
 const SECONDARY_COLOR = 'red';
 
+const screen_width =  getscreenwidth();
+
+// getting proper bar width for responsive look
+const bar_width = Math.floor(screen_width/NUMBER_OF_ARRAY_BARS);
+
+
 export default class SortingVisualizer extends React.Component 
 {
   constructor(props) 
   {
     super(props);
-    this.state = { array: [],};
+    this.state = { array: []};
   }
 
   componentDidMount() 
@@ -66,24 +53,25 @@ export default class SortingVisualizer extends React.Component
   mergeSort() 
   {
     const animations = getMergeSortAnimations(this.state.array);
-    animation_healper1(animations);
+    animation_healper(animations);
   }
 
   quickSort() 
   {
     const animations = getQuickSortAnimations(this.state.array);
-    animation_healper1(animations);
+    animation_healper(animations);
   }
 
   heapSort() 
   {
-    // We leave it as an exercise to the viewer of this code to implement this method.
+    const animations = getHeapSortAnimations(this.state.array);
+    animation_healper(animations);
   }
 
   bubbleSort() 
   {
     const animations = getBubbleSortAnimations(this.state.array);
-    animation_healper1(animations);
+    animation_healper(animations);
   }
   selectionSort()
   {
@@ -92,7 +80,9 @@ export default class SortingVisualizer extends React.Component
 
   insertionSort()
   {
-
+      // best == O(n) avg. == O(n^2)  worst = O(n^2)
+    const animations = getInsertionSortAnimations(this.state.array);
+    animation_healper(animations);
   }
 
 
@@ -101,14 +91,24 @@ export default class SortingVisualizer extends React.Component
     const {array} = this.state;
 
     return (
-      <div className="array-container">
+      <div className="array-container"
+        style={{
+            position:"absolute",
+            right:`${bar_width*0.05*NUMBER_OF_ARRAY_BARS}px`,
+
+            left:`${bar_width*0.05*NUMBER_OF_ARRAY_BARS}px`,
+        }}
+        >
         {array.map((value, idx) => (
           <div
             className="array-bar"
             key={idx}
             style={{
               backgroundColor: PRIMARY_COLOR,
+              position: "relative",
               height: `${value}px`,
+              width: `${bar_width*0.5}px`,
+              margin: `${bar_width*0.1}px`,
             }}></div>
         ))}
         <button onClick = {() => this.resetArray()}>Generate New Array</button>
@@ -117,20 +117,13 @@ export default class SortingVisualizer extends React.Component
         <button onClick = {() => this.heapSort()}>Heap Sort</button>
         <button onClick = {() => this.bubbleSort()}>Bubble Sort</button>
         <button onClick = {() => this.insertionSort()}>Insertion Sort</button>
-        <button onClick = {() => this.selectionSort()}> Selection Sort</button>
       </div>
     );
   }
 }
 
-// From https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
-function randomIntFromInterval(min, max) 
-{
-  // min and max included
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function animation_healper1(animation_array)
+// HEALPER FUNCTIONS-------------
+function animation_healper(animation_array)
 {
     for (let i = 0; i < animation_array.length; i++) 
     {
@@ -162,3 +155,14 @@ function animation_healper1(animation_array)
     }
 }
 
+function randomIntFromInterval(min, max) 
+{
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function getscreenwidth()
+{
+    const w = window.screen.width;
+    return w;
+}
