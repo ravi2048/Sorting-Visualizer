@@ -1,0 +1,19 @@
+.array-container {
+    position: relative;
+    /* left: 90px; */
+    top: 90px;
+    /* box-sizing: border-box; */
+    
+    
+  }
+  
+  
+  .array-bar {
+    width: 4px;
+    border: 1px solid rgb(0, 0, 0);
+    display: inline-block;
+    margin:   0 1px; 
+    padding-top: 7px;
+    font-family: sans-serif;
+   
+  }
