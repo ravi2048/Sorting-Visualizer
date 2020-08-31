@@ -13,7 +13,7 @@ import './SortingVisualizer.css';
 const ANIMATION_SPEED_MS = 1;
 
 // Change this value for the number of bars (value) in the array.
-const NUMBER_OF_ARRAY_BARS = 200;
+const NUMBER_OF_ARRAY_BARS = 150;
 
 
 // This is the main color of the array bars.
@@ -118,10 +118,12 @@ export default class SortingVisualizer extends React.Component
     return (
       <div className="array-container"
         style={{
+          width:1200,
+          // height:100,
             position:"absolute",
-            right:`${bar_width*0.05*NUMBER_OF_ARRAY_BARS}px`,
+            // right:`${bar_width*0.05*NUMBER_OF_ARRAY_BARS}px`,
 
-            left:`${bar_width*0.05*NUMBER_OF_ARRAY_BARS}px`,
+            left:`${bar_width*0.01*NUMBER_OF_ARRAY_BARS}px`,
         }}
         >
         {array.map((value, idx) => (
