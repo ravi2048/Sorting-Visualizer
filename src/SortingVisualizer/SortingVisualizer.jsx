@@ -118,11 +118,9 @@ export default class SortingVisualizer extends React.Component
     return (
       <div className="array-container"
         style={{
-          width:1200,
-          // height:100,
+         
             position:"absolute",
-            // right:`${bar_width*0.05*NUMBER_OF_ARRAY_BARS}px`,
-
+            right:`${bar_width*0.05*NUMBER_OF_ARRAY_BARS}px`,
             left:`${bar_width*0.01*NUMBER_OF_ARRAY_BARS}px`,
         }}
         >
