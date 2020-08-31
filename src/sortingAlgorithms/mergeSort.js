@@ -33,7 +33,7 @@ export function getMergeSortAnimations(array)
       if (tempArray[i] <= tempArray[j]) 
       {
         animation_array.push([k, tempArray[i]]);
-        mainArray[k] = tempArray[i];
+        mainArray[k] = tempArray[i];   //overwriting the correct value at index
         k++;
         i++;
       } 

@@ -1,38 +1,50 @@
-export function getBubbleSortAnimations(arr)
+export function getBubbleSortAnimations(array)
 {
-    let n = arr.length;
+    let n = array.length;
     const animation_array = [];
-    const array = arr.slice();
     if(n<=1)
-        return;
+        return array;
     let idx=0;
+    let b=false;
+
+    for(let j=0;j<n-1;j++)
+    {
+        if(array[j]>array[j+1])
+            b = true;
+    }
+    
     for(let i=0;i<n-1;i++)
     {
-        for(let j=0;j<n-i-1;j++)
+        
+        if(b===true)  //  if already sorted then don't sort
         {
-            if(array[j]>array[j+1])
+            for(let j=0;j<n-i-1;j++)
             {
-                animation_array.push([j,j+1]);
-                animation_array.push([j,j+1]);
-                animation_array.push([j,array[j+1]]);
-                //swappping
-                [array[j], array[j+1]] = [array[j+1], array[j]];
+                if(array[j]>array[j+1])
+                {
+                    animation_array.push([j,j+1]);
+                    animation_array.push([j,j+1]);
+                    animation_array.push([j,array[j+1]]);
+                    //swappping
+                    [array[j], array[j+1]] = [array[j+1], array[j]];
+                }
+                else{
+                    animation_array.push([j,j+1]);
+                    animation_array.push([j,j+1]);
+                    animation_array.push([j,array[j]]);
+                }
+            }
+            animation_array.push([i,i+1]);
+            animation_array.push([i,i+1]);
+            animation_array.push([n-1-i,array[n-1-i]]);
 
-                animation_array.push([j,j+1]);
-                animation_array.push([j,j+1]);
-                animation_array.push([j+1,arr[j+1]]);
-            }
-            else{
-                animation_array.push([j,j]);
-                animation_array.push([j,j]);
-                animation_array.push([j,array[j]]);
-            }
         }
-        animation_array.push([n-1-i,n-1-i]);
-        animation_array.push([n-1-i,n-1-i]);
-        animation_array.push([n-1-i,array[n-1-i]]);
+        else
+        {
+            animation_array.push([i,i+1]);
+            animation_array.push([i,i+1]);
+            animation_array.push([n-1-i,array[n-1-i]]);
+        }
     }
-
-
     return animation_array;
 }

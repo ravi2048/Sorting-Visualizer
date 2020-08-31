@@ -1,5 +1,6 @@
 
 import React from 'react';
+
 import {getMergeSortAnimations} from '../sortingAlgorithms/mergeSort.js';
 import {getBubbleSortAnimations} from '../sortingAlgorithms/bubbleSort.js';
 import {getQuickSortAnimations} from '../sortingAlgorithms/quickSort.js';
@@ -12,7 +13,7 @@ import './SortingVisualizer.css';
 const ANIMATION_SPEED_MS = 1;
 
 // Change this value for the number of bars (value) in the array.
-const NUMBER_OF_ARRAY_BARS = 100;
+const NUMBER_OF_ARRAY_BARS = 200;
 
 
 // This is the main color of the array bars.
@@ -21,10 +22,19 @@ const PRIMARY_COLOR = 'turquoise';
 // This is the color of array bars that are being compared throughout the animations.
 const SECONDARY_COLOR = 'red';
 
-const screen_width =  getscreenwidth();
+var screen_width =   window.screen.width;
+var screen_height =  window.screen.height;
+
+
+var onresize = function() {
+  screen_width = window.screen.width;
+  screen_height = window.screen.height;
+}
+window.addEventListener("resize", onresize);
+
 
 // getting proper bar width for responsive look
-const bar_width = Math.floor(screen_width/NUMBER_OF_ARRAY_BARS);
+const bar_width = screen_width*0.65/NUMBER_OF_ARRAY_BARS;
 
 
 export default class SortingVisualizer extends React.Component 
@@ -38,48 +48,63 @@ export default class SortingVisualizer extends React.Component
   componentDidMount() 
   {
     this.resetArray();
+    this.mergeSort();
+    this.quickSort();
+    this.heapSort();
+    this.insertionSort();
+    this.bubbleSort();
   }
+ 
 
   resetArray() 
   {
+    document.getElementById("i1").style.backgroundColor = "turquoise";
+    document.getElementById("i1").position="relative";
     const array = [];
+    const x = screen_height;
     for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) 
     {
-      array.push(randomIntFromInterval(5, 500));
+      array.push(randomIntFromInterval(5, x*0.58));
     }
     this.setState({array});
   }
 
   mergeSort() 
   {
+    document.getElementById("i2").style.backgroundColor = "turquoise";
+    document.getElementById("i2").position="relative";
     const animations = getMergeSortAnimations(this.state.array);
     animation_healper(animations);
   }
 
   quickSort() 
   {
+    document.getElementById("i3").style.backgroundColor = "turquoise";
+    document.getElementById("i3").position="relative";
     const animations = getQuickSortAnimations(this.state.array);
     animation_healper(animations);
   }
 
   heapSort() 
   {
+    document.getElementById("i4").style.backgroundColor = "turquoise";
+    document.getElementById("i4").position="relative";
     const animations = getHeapSortAnimations(this.state.array);
     animation_healper(animations);
   }
 
   bubbleSort() 
   {
+    document.getElementById("i5").style.backgroundColor = "turquoise";
+    document.getElementById("i5").position="relative";
     const animations = getBubbleSortAnimations(this.state.array);
     animation_healper(animations);
-  }
-  selectionSort()
-  {
-
   }
 
   insertionSort()
   {
+    document.getElementById("i6").style.backgroundColor = "turquoise";
+    document.getElementById("i6").position="relative";
       // best == O(n) avg. == O(n^2)  worst = O(n^2)
     const animations = getInsertionSortAnimations(this.state.array);
     animation_healper(animations);
@@ -107,16 +132,16 @@ export default class SortingVisualizer extends React.Component
               backgroundColor: PRIMARY_COLOR,
               position: "relative",
               height: `${value}px`,
-              width: `${bar_width*0.5}px`,
+              width: `${bar_width*0.9}px`,
               margin: `${bar_width*0.1}px`,
             }}></div>
         ))}
-        <button onClick = {() => this.resetArray()}>Generate New Array</button>
-        <button onClick = {() => this.mergeSort()}>Merge Sort</button>
-        <button onClick = {() => this.quickSort()}>Quick Sort</button>
-        <button onClick = {() => this.heapSort()}>Heap Sort</button>
-        <button onClick = {() => this.bubbleSort()}>Bubble Sort</button>
-        <button onClick = {() => this.insertionSort()}>Insertion Sort</button>
+        <button  id = "i1" onClick = {() => this.resetArray()}>Generate New Array</button>
+        <button  id = "i2" onClick = {() => this.mergeSort()}>Merge Sort</button>
+        <button  id = "i3" onClick = {() => this.quickSort()}>Quick Sort</button>
+        <button  id = "i4" onClick = {() => this.heapSort()}>Heap Sort</button>
+        <button  id = "i5" onClick = {() => this.bubbleSort()}>Bubble Sort</button>
+        <button  id = "i6" onClick = {() => this.insertionSort()}>Insertion Sort</button>
       </div>
     );
   }
@@ -136,7 +161,7 @@ function animation_healper(animation_array)
         const barTwoStyle = arrayBars[barTwoIdx].style;
         const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
         setTimeout(
-        function()
+        ()=>               // arrow function is convinient bcz it makes the scoping similar to other programming languages
         {
           barOneStyle.backgroundColor = color;
           barTwoStyle.backgroundColor = color;
@@ -145,7 +170,7 @@ function animation_healper(animation_array)
       else 
       {
         setTimeout( 
-        function()
+        ()=>
         {
           const [barOneIdx, newHeight] = animation_array[i];
           const barOneStyle = arrayBars[barOneIdx].style;
@@ -161,8 +186,15 @@ function randomIntFromInterval(min, max)
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function getscreenwidth()
-{
-    const w = window.screen.width;
-    return w;
-}
+// function get_width()
+// { 
+  
+   
+//   document.documentElement.clientWidth +  
+                    
+// }
+// function get_height
+// {
+//   document.documentElement.clientHeight;
+// }
+

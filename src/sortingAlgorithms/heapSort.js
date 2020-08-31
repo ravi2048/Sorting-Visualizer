@@ -5,51 +5,42 @@ export function getHeapSortAnimations(array)
     const animation_array = [];
     if (n <= 1) 
         return array;
-    const tempArray = array.slice();   //copying array into temp_array
-    for(let i=n/2-1;i>=0;i--)
+    for(let i=n/2-1;i>=0;i--)  // no need to heapify leaf nodes so the first parent node of last leaf node(at n-1) is at 2x+1 = n-1==>x =n/2-1 
     {
-        heapify(tempArray, n, i, animation_array);
+        heapify(array, n, i, animation_array);
     }
     for(let i=n-1;i>0;i--)
     {
         animation_array.push([0,i]);
         animation_array.push([0,i]);
-        animation_array.push([i,tempArray[0]]);
+        animation_array.push([i,array[0]]);
+
         animation_array.push([0,i]);
         animation_array.push([0,i]);
-        animation_array.push([0,tempArray[i]]);
+        animation_array.push([0,array[i]]);
 
-        [tempArray[i], tempArray[0]] = [tempArray[0], tempArray[i]];
+        [array[i], array[0]] = [array[0], array[i]];
 
-        heapify(tempArray, i, 0, animation_array);  // calling heapify for reduced array i=n-1
+        heapify(array, i, 0, animation_array);  // calling heapify for reduced array i=n-1
     }
     return animation_array;
 }
 
-function heapify(tempArray, n, idx, animation_array)
+function heapify(array, n, idx, animation_array)
 {
     let left_child_idx = 2*idx+1;
     let right_child_idx = 2*idx+2;
     let largest_node_idx = idx;
-    if(left_child_idx < n && tempArray[left_child_idx] > tempArray[largest_node_idx])
+
+    if(left_child_idx < n && array[left_child_idx] > array[largest_node_idx])
         largest_node_idx = left_child_idx;
-    if(right_child_idx < n && tempArray[right_child_idx] > tempArray[largest_node_idx])
+
+    if(right_child_idx < n && array[right_child_idx] > array[largest_node_idx])
         largest_node_idx = right_child_idx;
     
-    if(largest_node_idx != idx)
+    if(largest_node_idx !== idx)
     {
-        // animation_array.push([largest_node_idx,idx]);
-        // animation_array.push([largest_node_idx,idx]);
-        // animation_array.push([largest_node_idx,tempArray[idx]]);
-        [tempArray[largest_node_idx], tempArray[idx]] = [tempArray[idx], tempArray[largest_node_idx]];
-        // animation_array.push([idx,idx]);
-        // animation_array.push([idx,idx]);
-        // animation_array.push([idx,tempArray[largest_node_idx]]);
-        heapify(tempArray, n, largest_node_idx, animation_array);
+        [array[largest_node_idx], array[idx]] = [array[idx], array[largest_node_idx]];
+        heapify(array, n, largest_node_idx, animation_array);
     }
-    // else{
-    //     animation_array.push([idx,idx]);
-    //     animation_array.push([idx,idx]);
-    //     animation_array.push([idx,tempArray[idx]]);
-    // }
 }
